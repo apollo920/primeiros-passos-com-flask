@@ -1,32 +1,31 @@
 from flask import Flask, render_template, request
 
+#trabalhando com POO 
 class Jogo:
-    def __init__(self, nome, categoria, console):
+    def __init__(self,nome,categoria,console):
         self.nome=nome
         self.categoria=categoria
         self.console=console
-jogo1= Jogo('Mortal Kombat', 'Jogo de luta', 'XBOX e PLAY STATION')
-jogo2 = Jogo('God of War', 'Rack n Slash', 'PS2')
-jogo3 = Jogo('Overwatch', 'FPS', 'XBOX e PLAY STATION')
-lista_jogo = [jogo1,jogo2,jogo3]
+jogo1= Jogo('Valorant','FPS','Computador')
+lista_jogos=[jogo1]
 
+#Estrutura do flask
 app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template('lista.html', titulo='Jogos', jogos=lista_jogo)
+    return render_template('lista.html',titulo='Jogos',lista_jogos=lista_jogos)
 
 @app.route('/novo')
 def novo():
-    return render_template('novo_jogo.html',titulo='Cadastrar Jogos')
+    return render_template('novo_jogo.html',titulo='Cadastrar novo jogo')
 
-@app.route('/criar', methods=['POST','GET'])
+@app.route('/criar',methods=['POST'])
 def criar():
     nome = request.form['nome']
     categoria = request.form['categoria']
     console = request.form['console']
     jogo = Jogo(nome,categoria,console)
-    lista_jogo.append(jogo)
-    return render_template('lista.html', titulo='Jogos', jogos=lista_jogo)
-
+    lista_jogos.append(jogo)
+    return render_template('lista.html',titulo='Lista de Jogos', lista_jogos=lista_jogos)
 app.run(debug=True)
